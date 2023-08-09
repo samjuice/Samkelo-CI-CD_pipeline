@@ -3,60 +3,32 @@ name: CI/CD Pipeline
 on:
   push:
     branches:
-      - main
+      - main  # or the branch you want to trigger the pipeline on
 
 jobs:
-  build:
+  build-test-deploy:
     runs-on: windows-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1
+      - name: Setup .NET Framework
+        uses: actions/setup-dotnet@v2
         with:
-          msbuild-version: 'latest'
+          dotnet-version: '4.x'  # Use the version of .NET Framework you need
+
+      - name: Restore dependencies
+        run: nuget restore "MyDotNet/MyDotNet.sln"
 
       - name: Build application
-        run: msbuild "C:\Users\Samkelo Ndzondo\Downloads\GitHub repos\Samkelo-CI-CD_pipeline\MyDotNet\MyDotNet.sln" /p:Configuration=Release
+        run: msbuild "MyDotNet/MyDotNet.sln" /p:Configuration=Release
 
-  test:
-    needs: build
-    runs-on: windows-latest
+      - name: Run tests and code analysis
+        run: |
+          # Run your unit tests here
+          # Run code quality checks (e.g., code coverage, analysis) here
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1
-        with:
-          msbuild-version: 'latest'
-
-      - name: Build application
-        run: msbuild "C:\Users\Samkelo Ndzondo\Downloads\GitHub repos\Samkelo-CI-CD_pipeline\MyDotNet\MyDotNet.sln" /p:Configuration=Release
-
-
-      - name: Run tests (replace with actual test commands)
-        run: echo "Running tests..."
-
-  deploy:
-    needs: test
-    runs-on: windows-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1
-        with:
-          msbuild-version: 'latest'
-
-      - name: Build application
-        run: msbuild "C:\Users\Samkelo Ndzondo\Downloads\GitHub repos\Samkelo-CI-CD_pipeline\MyDotNet\MyDotNet.sln" /p:Configuration=Release
-
-
-      - name: Deploy to staging (replace with actual deployment steps)
-        run: echo "Deploying to staging..."
+      - name: Deploy to staging
+        run: |
+          # Deploy your application to a staging environment here
