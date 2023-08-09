@@ -1,37 +1,60 @@
-name: CI-CD Pipeline
+name: CI/CD Pipeline
 
 on:
   push:
     branches:
-      - main  # or the branch you want to trigger the pipeline on
+      - main
 
 jobs:
-  build-test-deploy:
+  build:
     runs-on: windows-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Setup .NET Framework
-        uses: actions/setup-dotnet@v2
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
         with:
-          dotnet-version: '4.x'  # Use the version of .NET Framework you need
-
-      - name: Restore dependencies
-        run: nuget restore "MyDotNet/MyDotNet.sln"
+          msbuild-version: 'latest'
 
       - name: Build application
-        run: msbuild "MyDotNet/MyDotNet.sln" /p:Configuration=Release
+        run: msbuild ./MyDotNet/MyDotNet.sln /p:Configuration=Release
 
-      - name: Test application
-        run: |
-          # Run your unit tests here
+  test:
+    needs: build
+    runs-on: windows-latest
 
-      - name: Code analysis
-        run: |
-          # Run code quality checks (e.g., code coverage, analysis) here
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-      - name: Deploy to staging
-        run: |
-          # Deploy your application to a staging environment here
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
+        with:
+          msbuild-version: 'latest'
+
+      - name: Build application
+        run: msbuild ./MyDotNet/MyDotNet.sln /p:Configuration=Release
+
+      - name: Run tests (replace with actual test commands)
+        run: echo "Running tests..."
+
+  deploy:
+    needs: test
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1
+        with:
+          msbuild-version: 'latest'
+
+      - name: Build application
+        run: msbuild ./MyDotNet/MyDotNet.sln /p:Configuration=Release
+
+      - name: Deploy to staging (replace with actual deployment steps)
+        run: echo "Deploying to staging..."
