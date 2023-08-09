@@ -21,7 +21,6 @@ jobs:
       - name: Build application
         run: msbuild "C:\Users\Samkelo Ndzondo\Downloads\GitHub repos\Samkelo-CI-CD_pipeline\MyDotNet\MyDotNet.sln" /p:Configuration=Release
 
-
   test:
     needs: build
     runs-on: windows-latest
@@ -37,6 +36,7 @@ jobs:
 
       - name: Build application
         run: msbuild "C:\Users\Samkelo Ndzondo\Downloads\GitHub repos\Samkelo-CI-CD_pipeline\MyDotNet\MyDotNet.sln" /p:Configuration=Release
+
 
       - name: Run tests (replace with actual test commands)
         run: echo "Running tests..."
@@ -56,6 +56,7 @@ jobs:
 
       - name: Build application
         run: msbuild "C:\Users\Samkelo Ndzondo\Downloads\GitHub repos\Samkelo-CI-CD_pipeline\MyDotNet\MyDotNet.sln" /p:Configuration=Release
+
 
       - name: Deploy to staging (replace with actual deployment steps)
         run: echo "Deploying to staging..."
