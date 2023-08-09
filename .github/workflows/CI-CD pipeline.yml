@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI-CD Pipeline
 
 on:
   push:
@@ -24,9 +24,12 @@ jobs:
       - name: Build application
         run: msbuild "MyDotNet/MyDotNet.sln" /p:Configuration=Release
 
-      - name: Run tests and code analysis
+      - name: Test application
         run: |
           # Run your unit tests here
+
+      - name: Code analysis
+        run: |
           # Run code quality checks (e.g., code coverage, analysis) here
 
       - name: Deploy to staging
